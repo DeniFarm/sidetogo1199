@@ -13,6 +13,7 @@ app.get('/take/screenshot', async (req, res) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
+    await page.waitForTimeout(10000); // Wait for 10 seconds
     const screenshot = await page.screenshot({ encoding: 'base64' });
     await browser.close();
     res.send(`<img src="data:image/png;base64,${screenshot}" />`);
