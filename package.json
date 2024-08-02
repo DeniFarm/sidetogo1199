@@ -1,13 +1,14 @@
 {
-  "name": "express-puppeteer-screenshot",
+  "name": "express-puppeteer-handler",
   "version": "1.0.0",
-  "description": "Express application that uses Puppeteer to take screenshots",
+  "description": "Express application that handles different domains with Puppeteer",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer": "^10.0.0"
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-stealth": "^2.8.0"
   }
 }
