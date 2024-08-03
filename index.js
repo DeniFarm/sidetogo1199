@@ -39,11 +39,11 @@ app.get('/control', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
-    await page.goto('https://google.com');
+    await page.goto('about:blank');
 
-    // Use WebSocket to enable DevTools and remote debugging
+    // Get the WebSocket endpoint for remote debugging
     const browserWSEndpoint = browser.wsEndpoint();
 
     res.send(`
@@ -54,16 +54,7 @@ app.get('/control', async (req, res) => {
       </head>
       <body>
         <h1>Browser Control</h1>
-        <iframe id="browser" src="https://client.igv.im/" width="100%" height="600"></iframe>
-        <script>
-          const iframe = document.getElementById('browser');
-          iframe.onload = () => {
-            iframe.contentWindow.postMessage({
-              type: 'connect',
-              url: '${browserWSEndpoint}'
-            }, '*');
-          };
-        </script>
+        <iframe id="browser" src="https://chrome.browserless.io?ws=${browserWSEndpoint}" width="100%" height="600"></iframe>
       </body>
       </html>
     `);
