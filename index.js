@@ -39,10 +39,7 @@ app.get('/control', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch({
-      headless: false,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto('https://www.google.com');
 
