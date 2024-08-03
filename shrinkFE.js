@@ -4,7 +4,7 @@ async function processUrl(url) {
   const LID = url.replace('https://shrinkforearn.xyz/', '');
   console.log(`Processing LID: ${LID}`);
 
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   try {
