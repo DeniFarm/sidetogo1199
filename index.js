@@ -1,10 +1,14 @@
 const express = require('express');
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const puppeteer = require('puppeteer');
+const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3000;
+const controlPassword = 'TIQ6CRdnqyQrkooo55Y73tko003jD5';
 
-puppeteer.use(StealthPlugin());
+let browser;
+let page;
+
+app.use(bodyParser.json());
 
 app.get('/take/screenshot', async (req, res) => {
   const url = req.query.url;
@@ -19,22 +23,46 @@ app.get('/take/screenshot', async (req, res) => {
   }
 
   try {
-    const browser = await puppeteer.launch(
-      headless: false,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
-    );
-    const page = await browser.newPage();
-    page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36');
-    await page.setViewport({ width: 1920, height: 1080 });
     await page.goto(url);
     await page.waitForTimeout(t * 1000); // Wait for the specified time
     const screenshot = await page.screenshot({ encoding: 'base64' });
-    await browser.close();
     res.send(`<img src="data:image/png;base64,${screenshot}" />`);
   } catch (error) {
     res.status(500).send('An error occurred while taking the screenshot');
   }
 });
+
+app.get('/control', async (req, res) => {
+  const password = req.query.pass;
+  if (password !== controlPassword) {
+    return res.status(403).send('Password did not match');
+  }
+
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Browser Control</title>
+    </head>
+    <body>
+      <h1>Browser Control</h1>
+      <iframe id="browser" src="${await page.url()}" width="100%" height="600"></iframe>
+      <script>
+        const iframe = document.getElementById('browser');
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+        // Add other control functionalities here
+        // Example: Click, Right Click, Copy, Paste
+      </script>
+    </body>
+    </html>
+  `);
+});
+
+(async () => {
+  browser = await puppeteer.launch();
+  page = await browser.newPage();
+})();
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
