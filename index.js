@@ -45,6 +45,7 @@ app.get('/control', async (req, res) => {
 
     // Use WebSocket to enable DevTools and remote debugging
     const browserWSEndpoint = browser.wsEndpoint();
+    const devtoolsURL = `https://chrome-devtools-frontend.appspot.com/serve_file/@e73b499c06e4bc55f909d14353f7f30f8d58e28b/inspector.html?ws=${browserWSEndpoint.split('//')[1]}`;
 
     res.send(`
       <!DOCTYPE html>
@@ -54,16 +55,7 @@ app.get('/control', async (req, res) => {
       </head>
       <body>
         <h1>Browser Control</h1>
-        <iframe id="browser" src="https://client.igv.im/" width="100%" height="600"></iframe>
-        <script>
-          const iframe = document.getElementById('browser');
-          iframe.onload = () => {
-            iframe.contentWindow.postMessage({
-              type: 'connect',
-              url: '${browserWSEndpoint}'
-            }, '*');
-          };
-        </script>
+        <iframe id="browser" src="${devtoolsURL}" width="100%" height="800"></iframe>
       </body>
       </html>
     `);
