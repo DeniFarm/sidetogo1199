@@ -45,7 +45,7 @@ app.get('/control', async (req, res) => {
 
     // Use WebSocket to enable DevTools and remote debugging
     const browserWSEndpoint = browser.wsEndpoint();
-    const devtoolsURL = `https://chrome-devtools-frontend.appspot.com/serve_file/@e73b499c06e4bc55f909d14353f7f30f8d58e28b/inspector.html?ws=${browserWSEndpoint.split('//')[1]}`;
+    const devtoolsURL = `https://www.google.com`;
 
     res.send(`
       <!DOCTYPE html>
