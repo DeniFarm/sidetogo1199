@@ -23,7 +23,7 @@ app.get('/api/bypass', async (req, res) => {
       const evo = require('./evo');
       result = await evo.processUrl(url);
     } else  {
-      throw error
+      return;
     }
     res.json({ s: true, r: result });
   } catch (error) {
