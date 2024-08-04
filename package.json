@@ -4,12 +4,11 @@
   "description": "Express application that uses Puppeteer to take screenshots",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "install": "npx puppeteer install"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer": "^22.15.0",
+    "puppeteer": "^10.0.0",
     "body-parser": "^1.19.0"
   }
 }
