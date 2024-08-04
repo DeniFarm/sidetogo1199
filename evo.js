@@ -44,7 +44,7 @@ async function processUrl(url) {
         clearInterval(clickGtelinkbtn);
         clearInterval(checkUrl);
         resolve();
-      }, 60000); // Adjust the duration as needed
+      }, 300000); // Adjust the duration as needed
     });
 
     await browser.close();
