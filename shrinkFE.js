@@ -10,10 +10,7 @@ async function processUrl(url) {
     await page.waitForTimeout(4000);
 
     // Send ajaxCallMaker("step_1");
-    await page.evaluate(() => {
-      // Using a trick to access the page's context
-      eval('ajaxCallMaker("step_1");');
-    });
+    await page.evaluate(() => ajaxCallMaker("step_1"));
 
     // Get SID function
     const getSID = () => {
