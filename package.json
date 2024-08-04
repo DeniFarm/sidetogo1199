@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer": "^22.15.0,
+    "puppeteer": "^22.15.0",
     "body-parser": "^1.19.0"
   }
 }
