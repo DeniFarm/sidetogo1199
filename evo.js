@@ -7,56 +7,51 @@ async function processUrl(url) {
   try {
     await page.goto(url);
 
-    // Function to click the #btn6 button every second
-    const clickBtn6 = () => page.evaluate(() => {
-      const btn = document.querySelector("#btn6");
-      if (btn) btn.click();
-    });
+    // Function to click a button every second
+    const clickBtn6 = setInterval(async () => {
+      try {
+        await page.click('#btn6');
+      } catch (e) {
+        console.log('Error clicking #btn6:', e);
+      }
+    }, 1000);
 
-    // Function to click the #gtelinkbtn button every 5 seconds
-    const clickGteLinkBtn = () => page.evaluate(() => {
-      const btn = document.querySelector("#gtelinkbtn");
-      if (btn) btn.click();
-    });
+    // Function to click a button every 5 seconds
+    const clickGtelinkbtn = setInterval(async () => {
+      try {
+        await page.click('#gtelinkbtn');
+      } catch (e) {
+        console.log('Error clicking #gtelinkbtn:', e);
+      }
+    }, 5000);
 
     // Function to check the URL every 3 seconds
-    const checkUrl = async () => {
+    const checkUrl = setInterval(async () => {
       const currentUrl = page.url();
       if (!currentUrl.startsWith('https://jaatremix.in')) {
-        return currentUrl;
-      }
-      return null;
-    };
-
-    // Start interval functions
-    const btn6Interval = setInterval(clickBtn6, 1000);
-    const gteLinkBtnInterval = setInterval(clickGteLinkBtn, 5000);
-    const urlCheckInterval = setInterval(async () => {
-      const newUrl = await checkUrl();
-      if (newUrl) {
-        clearInterval(btn6Interval);
-        clearInterval(gteLinkBtnInterval);
-        clearInterval(urlCheckInterval);
+        clearInterval(clickBtn6);
+        clearInterval(clickGtelinkbtn);
+        clearInterval(checkUrl);
         await browser.close();
-        return newUrl;
+        return currentUrl; // Return the non-matching URL
       }
     }, 3000);
 
-    // Wait until the urlCheckInterval finds a new URL or process is manually stopped
-    const finalUrl = await new Promise((resolve) => {
-      const checkResult = setInterval(async () => {
-        const newUrl = await checkUrl();
-        if (newUrl) {
-          clearInterval(checkResult);
-          resolve(newUrl);
-        }
-      }, 1000);
+    // Keep the browser running to allow intervals to work
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        clearInterval(clickBtn6);
+        clearInterval(clickGtelinkbtn);
+        clearInterval(checkUrl);
+        resolve();
+      }, 60000); // Adjust the duration as needed
     });
 
-    return finalUrl;
+    await browser.close();
+    return 'URL matched, process completed';
   } catch (error) {
     await browser.close();
-    throw error;
+    throw new Error(`Error processing URL: ${error.message}`);
   }
 }
 
