@@ -4,7 +4,8 @@
   "description": "Express application that uses Puppeteer to take screenshots",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "npx puppeteer install"
   },
   "dependencies": {
     "express": "^4.17.1",
